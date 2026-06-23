@@ -1,0 +1,25 @@
+[project]
+name = "survpfn"
+version = "0.1.0"
+description = "A prior-data fitted network (PFN) for time-to-event survival prediction."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+    "h5py>=3.16.0",
+    "huggingface-hub>=1.13.0",
+    "joblib>=1.5.3",
+    "numpy>=2.4.4",
+    "scikit-learn>=1.8.0",
+    "scikit-survival>=0.27.0",
+    "scipy>=1.17.1",
+    "survivaleval>=0.6.1",
+    "survset>=0.2.11",
+    "tfmplayground",
+    "torch>=2.9",
+    "wandb>=0.26.1",
+    "xgboost>=3.2.0",
+]
+
+[tool.uv.sources]
+tfmplayground = { git = "https://github.com/automl/TFM-Playground.git", rev = "4afd33e1c60928c8425ac979b9e1fd092ad0f216" }

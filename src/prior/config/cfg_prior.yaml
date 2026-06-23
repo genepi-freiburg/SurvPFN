@@ -1,0 +1,176 @@
+# ── SCM Configuration
+# prior and settings are based on https://github.com/ArikReuter/Graphs4CausalFoundationModels/tree/main/src/priors/causal_prior
+scm:
+  graph_seed:
+    distribution: discrete_uniform
+    low: 0
+    high: 100_000_000
+
+  p_modular_graph: 0.30
+  graph_n_blocks:
+    distribution: categorical
+    choices: [2, 3, 4, 5]
+    probabilities: [0.35, 0.30, 0.25, 0.10]
+  graph_p_within_multiplier:
+    distribution: uniform
+    low: 1.5
+    high: 5.0
+  graph_p_between_multiplier:
+    distribution: uniform
+    low: 0.0
+    high: 0.3
+
+  # Mechanism type selection
+  xgboost_prob:
+    distribution: uniform
+    low: 0.0
+    high: 0.30
+  mechanism_seed:
+    distribution: discrete_uniform
+    low: 0
+    high: 100_000_000
+
+  # MLP mechanism hyperparameters
+  mlp_nonlins:
+    distribution: categorical
+    choices: [tabicl_safe, tabicl, mixed_safe]
+    probabilities: [0.5, 0.3, 0.2]
+  mlp_p_linear:
+    distribution: beta
+    alpha: 1.0
+    beta: 4.0
+  mlp_num_hidden_layers:
+    distribution: discrete_uniform
+    low: 0
+    high: 3
+  mlp_hidden_dim:
+    distribution: categorical
+    choices: [8, 16, 32, 64, 128]
+    probabilities: [0.15, 0.25, 0.30, 0.20, 0.10]
+  mlp_activation_mode:
+    distribution: categorical
+    choices: [pre, post]
+    probabilities: [0.7, 0.3]
+  mlp_use_batch_norm:
+    value: false
+  mlp_node_shape:
+    value: [1]
+
+  # XGBoost mechanism hyperparameters
+  xgb_num_hidden_layers:
+    distribution: discrete_uniform
+    low: 0
+    high: 1
+  xgb_hidden_dim:
+    distribution: categorical
+    choices: [0, 16, 32, 64]
+  xgb_activation_mode:
+    distribution: categorical
+    choices: [pre, post]
+  xgb_node_shape:
+    value: [1]
+  xgb_n_training_samples:
+    distribution: discrete_uniform
+    low: 100
+    high: 1000
+  xgb_add_noise:
+    distribution: categorical
+    choices: [true, false]
+    probabilities: [0.3, 0.7]
+
+  # Noise distributions
+  random_additive_std:
+    value: true
+
+  exo_std_distribution:
+    distribution: categorical
+    choices: [gamma, pareto]
+    probabilities: [0.85, 0.15]
+  endo_std_distribution:
+    distribution: categorical
+    choices: [gamma, pareto]
+    probabilities: [0.85, 0.15]
+
+  # Exogenous noise (root node inputs)
+  exo_std_mean:
+    distribution: lognormal
+    mean: 0.0          # center ~1.0
+    std: 0.8
+  exo_std_std:
+    distribution: uniform
+    low: 0.1
+    high: 1.5
+
+  endo_std_mean:
+    distribution: lognormal
+    mean: -4.0         # center ~0.018
+    std: 0.3           # covers ~0.01 to ~0.03 just a jitter
+  endo_std_std:
+    distribution: uniform
+    low: 0.001
+    high: 0.01
+
+  # SCM configuration
+  scm_fast:
+    value: true
+  use_exogenous_mechanisms:
+    value: true
+  mechanism_generator_seed:
+    distribution: discrete_uniform
+    low: 0
+    high: 100_000_000
+
+# Survival distribution
+survival:
+  weibull_lambda:
+    distribution: lognormal
+    mean: -0.3         # center ~0.74
+    std: 0.6
+
+  weibull_k:
+    distribution: lognormal
+    mean: 0.0          # center 1.0
+    std: 0.3
+
+  signal_scale:
+    distribution: lognormal
+    mean: 0.6
+    std: 0.3
+
+  p_noph: 0.5
+
+# Feature / graph size
+features:
+  n_latent:
+    distribution: discrete_uniform
+    low: 0
+    high: 3
+
+  avg_parents:
+    distribution: lognormal
+    mean: 0.5          # center ~1.6
+    std: 0.8
+
+  p_binary_node: 0.15
+  max_categories: 6
+
+# Censoring
+censoring:
+  target_event_rate:
+    low: 0.15
+    high: 0.95
+  censoring_rate:
+    low: 0.0
+    high: 0.4
+
+# Dataset generation
+generation:
+  n_datasets: 10000
+  n_features: 2
+  n_features_max: 10
+  max_rows: 1000
+  seed: 42
+  n_jobs: -1
+  batch_size: 500
+  per_ncols: true
+  file_prefix: null
